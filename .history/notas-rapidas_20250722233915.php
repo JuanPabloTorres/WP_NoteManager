@@ -10,23 +10,20 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
-
 require_once plugin_dir_path(__FILE__) . 'includes/shortcodes.php';
 
 require_once plugin_dir_path(__FILE__) . 'includes/post-types/np-nota.php';
 
 require_once plugin_dir_path(__FILE__) . 'includes/taxonomies/categoria-nota.php';
 
-
 require_once plugin_dir_path(__FILE__) . 'includes/hooks/activation.php';
 
-
+require_once plugin_dir_path(__FILE__) . 'includes/hooks/deactivation.php';
 
 // Hooks
 register_activation_hook(__FILE__, 'nr_plugin_activar');
 
-
+register_deactivation_hook(__FILE__, 'nr_plugin_desactivar');
 
 function nr_enqueue_assets() {
     wp_enqueue_style('nr-style', plugin_dir_url(__FILE__) . 'assets/css/style.css');

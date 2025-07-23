@@ -10,21 +10,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
-
 require_once plugin_dir_path(__FILE__) . 'includes/shortcodes.php';
-
-require_once plugin_dir_path(__FILE__) . 'includes/post-types/np-nota.php';
 
 require_once plugin_dir_path(__FILE__) . 'includes/taxonomies/categoria-nota.php';
 
-
 require_once plugin_dir_path(__FILE__) . 'includes/hooks/activation.php';
 
-
-
-// Hooks
-register_activation_hook(__FILE__, 'nr_plugin_activar');
+require_once plugin_dir_path(__FILE__) . 'includes/hooks/crear-tabla.php';
+// Crear tabla al activar
+register_activation_hook(__FILE__, 'nr_crear_tabla');
 
 
 

@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
+require_once plugin_dir_path(__FILE__) . 'includes/hooks/deactivation.php';
 
 require_once plugin_dir_path(__FILE__) . 'includes/shortcodes.php';
 
@@ -24,6 +24,8 @@ require_once plugin_dir_path(__FILE__) . 'includes/hooks/activation.php';
 
 
 // Hooks
+
+register_deactivation_hook(__FILE__, 'nr_plugin_desactivar');
 register_activation_hook(__FILE__, 'nr_plugin_activar');
 
 

@@ -58,9 +58,7 @@ function nr_render_form_nueva_nota() {
     ]);
     
     if (is_wp_error($categorias)) {
-        
         echo '<option value="">Error al cargar categorías</option>';
-
         return ob_get_clean();
     }
     foreach ($categorias as $categoria) {

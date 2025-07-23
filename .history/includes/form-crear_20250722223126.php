@@ -48,34 +48,24 @@ function nr_render_form_nueva_nota() {
     <th scope="row"><label for="categoria_nota">Categoría</label></th>
     <td>
     <select name="categoria_nota" id="categoria_nota">
-    
     <option value="">— Selecciona una categoría —</option>
-    
     <?php
     $categorias = get_terms([
         'taxonomy' => 'categoria_nota',
         'hide_empty' => false
     ]);
-    
-    if (is_wp_error($categorias)) {
-        
-        echo '<option value="">Error al cargar categorías</option>';
-
-        return ob_get_clean();
-    }
     foreach ($categorias as $categoria) {
         echo '<option value="' . esc_attr($categoria->term_id) . '">' . esc_html($categoria->name) . '</option>';
     }
     ?>
     </select>
-    
     </td>
     </tr>
+    
     
     </table>
     <p><input type="submit" value="Guardar Nota" class="button button-primary"></p>
     </form>
     <?php
-    
     return ob_get_clean();
 }
