@@ -35,7 +35,7 @@ function nr_shortcode_listar_notas() {
         $wpdb->delete($tabla, ['id' => $id]);
         echo "<div class='notice notice-success is-dismissible' style='margin:1em 0;padding:1em;border-left:4px solid #46b450;background:#f6fff7;color:#222;font-size:1.1em;'>
     🗑️ Nota eliminada correctamente.
-    <button type='button' class='notice-dismiss' onclick='this.parentElement.style.display=\"none\";' aria-label='Cerrar' value='X'></button>
+    <button type='button' class='notice-dismiss' onclick='this.parentElement.style.display=\"none\";' aria-label='Cerrar' value='Cerrar'></button>
 </div>";
     }
     
