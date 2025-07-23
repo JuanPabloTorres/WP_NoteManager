@@ -35,9 +35,11 @@ function nr_crear_categorias_predeterminadas() {
 }
 
 function nr_crear_tabla() {
+    
     global $wpdb;
     
     $tabla = $wpdb->prefix . 'np_notas';
+    
     $charset = $wpdb->get_charset_collate();
     
     $sql = "CREATE TABLE IF NOT EXISTS $tabla (
@@ -45,12 +47,12 @@ function nr_crear_tabla() {
         titulo varchar(255) NOT NULL,
         contenido text NOT NULL,
         prioridad varchar(50) DEFAULT 'Media',
-        categoria_id mediumint(9) DEFAULT 0,
         fecha datetime DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY  (id)
     ) $charset;";
     
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+    
     dbDelta($sql);
 }
 
@@ -64,7 +66,7 @@ function nr_plugin_activar() {
     }
 }
 
-// register_activation_hook(__FILE__, 'nr_plugin_activar');
+register_activation_hook(__FILE__, 'nr_plugin_activar');
 
 
 

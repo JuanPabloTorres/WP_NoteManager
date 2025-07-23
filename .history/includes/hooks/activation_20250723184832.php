@@ -64,7 +64,7 @@ function nr_plugin_activar() {
     }
 }
 
-// register_activation_hook(__FILE__, 'nr_plugin_activar');
+register_activation_hook(__FILE__, 'nr_plugin_activar');
 
 
 

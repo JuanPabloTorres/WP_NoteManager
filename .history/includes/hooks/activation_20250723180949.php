@@ -3,15 +3,6 @@ if (!defined('ABSPATH')) exit;
 
 // Hook al activar el plugin
 function nr_crear_categorias_predeterminadas() {
-    // Primero asegurarse de que la taxonomía esté registrada
-    if (!taxonomy_exists('categoria_nota')) {
-        // Registrar la taxonomía temporalmente para la activación
-        register_taxonomy('categoria_nota', 'nota_rapida', array(
-            'public' => true,
-            'hierarchical' => true,
-        ));
-    }
-    
     $categorias = [
         'Urgente' => 'Tareas que requieren atención inmediata',
         'Importante' => 'Notas de prioridad alta pero no urgente',
@@ -22,22 +13,19 @@ function nr_crear_categorias_predeterminadas() {
     
     foreach ($categorias as $nombre => $descripcion) {
         if (!term_exists($nombre, 'categoria_nota')) {
-            $result = wp_insert_term($nombre, 'categoria_nota', [
+            wp_insert_term($nombre, 'categoria_nota', [
                 'description' => $descripcion
             ]);
-            
-            // Debug: verificar si hay errores
-            if (is_wp_error($result)) {
-                error_log('Error creando categoría ' . $nombre . ': ' . $result->get_error_message());
-            }
         }
     }
 }
 
 function nr_crear_tabla() {
+    
     global $wpdb;
     
     $tabla = $wpdb->prefix . 'np_notas';
+    
     $charset = $wpdb->get_charset_collate();
     
     $sql = "CREATE TABLE IF NOT EXISTS $tabla (
@@ -45,12 +33,12 @@ function nr_crear_tabla() {
         titulo varchar(255) NOT NULL,
         contenido text NOT NULL,
         prioridad varchar(50) DEFAULT 'Media',
-        categoria_id mediumint(9) DEFAULT 0,
         fecha datetime DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY  (id)
     ) $charset;";
     
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+    
     dbDelta($sql);
 }
 
@@ -58,11 +46,29 @@ function nr_crear_tabla() {
 function nr_plugin_activar() {
     nr_crear_tabla();
     
-    if (!get_option('nr_categorias_insertadas')) {
+    // Comprobar si FALTAN categorías, no solo si existe la opción
+    $categorias = get_terms([
+        'taxonomy'   => 'categoria_nota',
+        'hide_empty' => false,
+        'fields'     => 'names',
+    ]);
+    
+    $faltan = false;
+    $esperadas = ['Urgente', 'Importante', 'Pendiente', 'Ideas', 'Recordatorio'];
+    
+    foreach ($esperadas as $nombre) {
+        if (!in_array($nombre, $categorias)) {
+            $faltan = true;
+            break;
+        }
+    }
+    
+    if ($faltan) {
         nr_crear_categorias_predeterminadas();
         update_option('nr_categorias_insertadas', true);
     }
 }
+
 
 // register_activation_hook(__FILE__, 'nr_plugin_activar');
 

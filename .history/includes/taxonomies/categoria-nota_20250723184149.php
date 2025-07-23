@@ -1,8 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-// Registrar taxonomía de categorías para notas
-function nr_registrar_taxonomia_categoria() {
+function nr_registrar_taxonomia_categoria_nota() {
     $labels = [
         'name'              => 'Categorías',
         'singular_name'     => 'Categoría',
@@ -42,7 +41,7 @@ function nr_registrar_taxonomia_categoria() {
 }
 
 // Asegúrate de que se registre después del post type
-add_action('init', 'nr_registrar_taxonomia_categoria', 20);
+add_action('init', 'nr_registrar_taxonomia_categoria_nota', 20);
 
 
 
