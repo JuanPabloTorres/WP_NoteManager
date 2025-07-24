@@ -51,17 +51,14 @@ function nr_crear_tabla() {
         PRIMARY KEY  (id)
     ) $charset;";
     
-    // Verificar y modificar columna si es necesario
-    $column = $wpdb->get_results("SHOW COLUMNS FROM $tabla LIKE 'categoria_id'");
+    // Verificar si necesita agregar la columna categoria
+    $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $tabla LIKE 'categoria_id'");
     
-    if (empty($column)) {
+    if (empty($column_exists)) {
+        // Si tenía categoria_id, elimínala y agrega categoria
+        $wpdb->query("ALTER TABLE $tabla DROP COLUMN IF EXISTS categoria_id");
         
-        $wpdb->query("ALTER TABLE $tabla ADD COLUMN categoria_id int(11) DEFAULT NULL AFTER prioridad");
-        
-    } else {
-        
-        $wpdb->query("ALTER TABLE $tabla MODIFY COLUMN categoria_id int(11) DEFAULT NULL");
-        
+        $wpdb->query("ALTER TABLE $tabla ADD COLUMN categoria varchar(50) DEFAULT '' AFTER prioridad");
     }
     
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';

@@ -12,8 +12,8 @@ function nr_render_form_nueva_nota() {
         $contenido = sanitize_textarea_field($_POST['contenido']);
 
         $prioridad = sanitize_text_field($_POST['prioridad']);
-
-        $categoria_id = isset($_POST['categoria_nota']) ? intval($_POST['categoria_nota']) : null;
+        
+        $categoria_id = isset($_POST['categoria_nota']) ? intval($_POST['categoria_nota']) : 0;
         
         $wpdb->insert($tabla, [
             'titulo' => $titulo,
@@ -61,24 +61,24 @@ function nr_render_form_nueva_nota() {
     <th scope="row"><label for="categoria_nota">Categoría</label></th>
     <td>
     <select name="categoria_nota" id="categoria_nota">
-
     <option value="">— Selecciona una categoría —</option>
     
     <?php
     // Verificar si la taxonomía existe
     if (!taxonomy_exists('categoria_nota')) {
         // Usar categorías hardcodeadas como fallback
-     $categorias = get_terms([
-        'taxonomy' => 'categoria_nota',
-        'hide_empty' => false,
-    ]);
-
-    foreach ($categorias as $categoria) {
-        echo '<option value="' . esc_attr($categoria->term_id) . '">' . esc_html($categoria->name) . '</option>';
-    }
-
+        $categorias_fallback = [
+            1 => 'Urgente',
+            2 => 'Importante', 
+            3 => 'Pendiente',
+            4 => 'Ideas',
+            5 => 'Recordatorio'
+        ];
+        
+        foreach ($categorias_fallback as $id => $nombre) {
+            echo '<option value="' . esc_attr($id) . '">' . esc_html($nombre) . '</option>';
+        }
     } else {
-
         $categorias = get_terms([
             'taxonomy' => 'categoria_nota',
             'hide_empty' => false

@@ -19,7 +19,7 @@ function nr_render_form_nueva_nota() {
             'titulo' => $titulo,
             'contenido' => $contenido,
             'prioridad' => $prioridad,
-            'categoria_id' => $categoria_id, // Agregar campo categoria_id a la tabla
+            'categoria' => $categoria_id, // Agregar campo categoria_id a la tabla
         ]);
         
         $id = $wpdb->insert_id;
